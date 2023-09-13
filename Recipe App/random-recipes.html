@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags, title, and CSS styles -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Recipes - RecipeWorld</title>
+    <style>
+        /* CSS Styles Here */
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('background.jpg'); /* Add your background image URL here */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Fix the background position */
+            font-family: Arial, sans-serif; /* Use a suitable font family */
+            color: #333; /* Text color for random recipes */
+        }
+
+        .desktop {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            margin-top: 20px;
+        }
+
+        .logo {
+            height: 100px;
+            width: 100px;
+            cursor: pointer; /* Add a cursor pointer */
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-top: 10px;
+            color: #fff; /* Change the title color to white */
+        }
+
+        .random-recipes {
+            max-width: 90%;
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around; /* Center-align the recipe boxes with equal space between */
+        }
+
+        .recipe-box {
+            border-radius: 10px;
+            background: radial-gradient(221.92% 70.71% at 50% 50%, rgba(0, 0, 0, 0.50) 0%, #FCFCFC 100%);
+            padding: 20px;
+            margin-bottom: 20px; /* Add margin to separate recipe boxes vertically */
+            width: calc(25% - 20px); /* Calculate width for four boxes per row */
+            text-align: center;
+            max-width: 300px; /* Reduce the size of the boxes */
+        }
+
+        .recipe-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .recipe-list-item {
+            margin-bottom: 10px;
+        }
+
+        .recipe-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .recipe-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+
+        .recipe-name {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML Content Here -->
+    <div class="desktop">
+        <div class="header">
+            <img class="logo" alt="Logo" src="logo.png" onclick="redirectToHomepage()" />
+            <h1>RecipeWorld</h1>
+        </div>
+        
+        <!-- Section to Display Random Recipes -->
+        <div class="random-recipes" id="recipe-list">
+            <!-- Random recipes will be dynamically added here using JavaScript -->
+        </div>
+    </div>
+
+    <!-- JavaScript to fetch and display random recipes -->
+    <script>
+        // Function to fetch and display random recipes
+        function displayRandomRecipes() {
+            // Replace 'YOUR_APP_ID' and 'YOUR_APP_KEY' with your actual Edamam API credentials
+            const appId = '6d07bcac';
+            const appKey = '2af7e7e87610a515dba26a484c02cc07';
+
+            // Generate a timestamp for a unique request each time
+            const timestamp = Date.now();
+
+            // Define the number of random recipes you want to fetch
+            const numberOfRecipes = 100; // You can adjust this number as needed
+
+            // Build the API URL to fetch random recipes with a timestamp
+            const apiUrl = `https://api.edamam.com/search?q=random&app_id=${appId}&app_key=${appKey}&from=0&to=${numberOfRecipes}&timestamp=${timestamp}`;
+
+            // Get the recipe list container
+            const recipeList = document.getElementById('recipe-list');
+
+            // Fetch random recipes
+            fetch(apiUrl)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    const recipes = data.hits.map((hit) => ({
+                        title: hit.recipe.label,
+                        url: hit.recipe.url,
+                        image: hit.recipe.image,
+                    }));
+
+                    // Display the random recipes
+                    recipes.forEach((recipe) => {
+                        const recipeBox = document.createElement('div');
+                        recipeBox.className = 'recipe-box';
+
+                        const image = document.createElement('img');
+                        image.className = 'recipe-image';
+                        image.src = recipe.image;
+                        image.alt = recipe.title;
+
+                        const name = document.createElement('div');
+                        name.className = 'recipe-name';
+                        name.textContent = recipe.title;
+
+                        const link = document.createElement('a');
+                        link.className = 'recipe-link';
+                        link.href = recipe.url;
+                        link.textContent = 'View Recipe';
+
+                        recipeBox.appendChild(image);
+                        recipeBox.appendChild(name);
+                        recipeBox.appendChild(link);
+                        recipeList.appendChild(recipeBox);
+                    });
+                })
+                .catch((error) => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+
+        // Function to redirect to the homepage
+        function redirectToHomepage() {
+            window.location.href = 'home.html'; // Replace with the actual homepage URL
+        }
+
+        // Call the function to display random recipes when the page loads
+        window.onload = function () {
+            displayRandomRecipes();
+        };
+    </script>
+</body>
+</html>

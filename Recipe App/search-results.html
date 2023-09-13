@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags, title, and CSS styles -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecipeWorld - Search Results</title>
+    <style>
+        /* CSS Styles Here */
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('background.jpg'); /* Add your background image URL here */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Fix the background position */
+            font-family: Arial, sans-serif; /* Use a suitable font family */
+            color: #333; /* Text color for search results */
+        }
+
+        .desktop {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            margin-top: 20px;
+        }
+
+        .logo {
+            height: 100px;
+            width: 100px;
+            cursor: pointer; /* Add a cursor pointer */
+        }
+
+        .text-wrapper {
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #fff; /* Change the title color to white */
+        }
+
+        .search-results {
+            max-width: 90%;
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap; /* Allow recipes to wrap to the next row */
+            justify-content: space-between; /* Add space between recipe boxes */
+        }
+
+        .recipe-box {
+            border-radius: 10px;
+            background: radial-gradient(221.92% 70.71% at 50% 50%, rgba(0, 0, 0, 0.50) 0%, #FCFCFC 100%);
+            padding: 20px;
+            margin-bottom: 20px; /* Add margin to separate recipe boxes vertically */
+            flex: 0 0 calc(25% - 20px); /* Calculate width for four boxes per row */
+            text-align: center;
+            max-width: 300px; /* Reduce the size of the boxes */
+        }
+
+        .recipe-list {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap; /* Allow recipes to wrap to the next row */
+            justify-content: space-between; /* Add space between recipe boxes */
+        }
+
+        .recipe-list-item {
+            margin-bottom: 10px;
+        }
+
+        .recipe-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .recipe-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px; /* Add margin to separate the image from the title */
+        }
+
+        .recipe-name {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML Content Here -->
+    <div class="desktop">
+        <div class="header">
+            <img class="logo" alt="Logo" src="logo.png" onclick="redirectToHomepage()" />
+            <div class="text-wrapper">RecipeWorld</div>
+        </div>
+        
+        <!-- Section to Display Search Results -->
+        <ul class="search-results" id="recipe-list">
+            <!-- Recipes will be dynamically added here using JavaScript -->
+        </ul>
+    </div>
+
+    <!-- JavaScript to fetch and display search results -->
+    <script>
+        // Function to get the search query from the URL
+        function getSearchQuery() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('q');
+        }
+
+        // Function to fetch and display search results
+        function displaySearchResults() {
+            const query = getSearchQuery();
+            // Check if the query exists
+            if (query) {
+                // Replace 'YOUR_APP_ID' and 'YOUR_APP_KEY' with your actual Edamam API credentials
+                const appId = '6d07bcac';
+                const appKey = '2af7e7e87610a515dba26a484c02cc07';
+
+                // Get the search results
+                fetch(`https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        const recipes = data.hits.map((hit) => ({
+                            title: hit.recipe.label,
+                            url: hit.recipe.url,
+                            image: hit.recipe.image,
+                        }));
+
+                        // Display the recipes
+                        displayRecipes(recipes);
+                    })
+                    .catch((error) => {
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+            }
+        }
+
+        // Function to display the recipes
+        function displayRecipes(recipes) {
+            const recipeList = document.getElementById('recipe-list');
+
+            // Create and append list items for each recipe
+            recipes.forEach((recipe) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'recipe-list-item';
+
+                const recipeBox = document.createElement('div');
+                recipeBox.className = 'recipe-box';
+
+                const image = document.createElement('img');
+                image.className = 'recipe-image';
+                image.src = recipe.image;
+                image.alt = recipe.title;
+
+                const name = document.createElement('div');
+                name.className = 'recipe-name';
+                name.textContent = recipe.title;
+
+                const link = document.createElement('a');
+                link.className = 'recipe-link';
+                link.href = recipe.url;
+                link.textContent = 'View Recipe';
+
+                recipeBox.appendChild(image);
+                recipeBox.appendChild(name);
+                recipeBox.appendChild(link);
+                listItem.appendChild(recipeBox);
+                recipeList.appendChild(listItem);
+            });
+        }
+
+        // Function to redirect to the homepage
+        function redirectToHomepage() {
+            window.location.href = 'home.html'; // Replace with the actual homepage URL
+        }
+
+        // Call the function to display search results when the page loads
+        window.onload = function () {
+            displaySearchResults();
+        };
+    </script>
+</body>
+</html>
