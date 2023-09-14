@@ -48,6 +48,49 @@
             color: #fff; /* Change the title color to white */
         }
 
+        /* Add styles for the search bar */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            margin-top: 20px; /* Adjust the top margin */
+        }
+
+        .search-input {
+            font-size: 20px; /* Reduce the font size for the search input */
+            font-family: "Comic Sans MS", sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            padding: 10px; /* Adjust padding for the search input */
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px; /* Add margin to separate input and button */
+        }
+
+        .search-button {
+            font-size: 20px;
+            font-family: "Comic Sans MS", sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            background-color: #F40058;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #AE03FF;
+        }
+
+        /* Add a white stroke line */
+        .stroke-line {
+            width: 90%;
+            height: 5px;
+            background-color: #fff;
+            margin-top: 20px; /* Adjust the top margin */
+        }
+
         .search-results {
             max-width: 90%;
             margin-top: 20px;
@@ -57,6 +100,7 @@
         }
 
         .recipe-box {
+            position: relative; /* Position for tooltip */
             border-radius: 10px;
             background: radial-gradient(221.92% 70.71% at 50% 50%, rgba(0, 0, 0, 0.50) 0%, #FCFCFC 100%);
             padding: 20px;
@@ -64,24 +108,34 @@
             flex: 0 0 calc(25% - 20px); /* Calculate width for four boxes per row */
             text-align: center;
             max-width: 300px; /* Reduce the size of the boxes */
+            transition: transform 0.2s ease-in-out; /* Add transition effect for hover */
+        }
+
+        .recipe-box:hover {
+            transform: scale(1.05); /* Increase the size of the box on hover */
         }
 
         .recipe-list {
             list-style-type: none;
             padding: 0;
-            display: flex;
-            flex-wrap: wrap; /* Allow recipes to wrap to the next row */
-            justify-content: space-between; /* Add space between recipe boxes */
         }
 
-        .recipe-list-item {
-            margin-bottom: 10px;
-        }
-
+        /* Add styles for the "View Recipe" link */
         .recipe-link {
             text-decoration: none;
-            color: #333;
+            color: #fff;
             font-weight: bold;
+            display: inline-block;
+            background-color: #F40058; /* Background color for the link */
+            color: #fff; /* Text color for the link */
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-top: 10px; /* Add margin to separate the link from the recipe title */
+        }
+
+        /* Change the background color on hover */
+        .recipe-link:hover {
+            background-color: #AE03FF; /* Change background color on hover */
         }
 
         .recipe-image {
@@ -93,6 +147,31 @@
         .recipe-name {
             font-weight: bold;
         }
+
+        /* Add a style for the tooltip */
+        .recipe-tooltip {
+            display: none;
+            position:fixed;
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            z-index: 1;
+            width: 100%; /* Set a fixed width for the tooltip */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add shadow to the tooltip */
+            top: 0; /* Align tooltip to the top of the recipe box */
+        }
+
+        .recipe-ingredients {
+            /* Style for the ingredients list */
+            list-style-type: decimal;
+            padding-left: 20px;
+        }
+
+        .recipe-ingredients li {
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -103,6 +182,15 @@
             <div class="text-wrapper">RecipeWorld</div>
         </div>
         
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input class="search-input" type="text" placeholder="Search for recipes" id="search-input" />
+            <button class="search-button" onclick="performSearch()">Search</button>
+        </div>
+
+        <!-- White Stroke Line -->
+        <div class="stroke-line"></div>
+
         <!-- Section to Display Search Results -->
         <ul class="search-results" id="recipe-list">
             <!-- Recipes will be dynamically added here using JavaScript -->
@@ -122,6 +210,10 @@
             const query = getSearchQuery();
             // Check if the query exists
             if (query) {
+                // Display the search query in the search input
+                const searchInput = document.getElementById('search-input');
+                searchInput.value = query;
+
                 // Replace 'YOUR_APP_ID' and 'YOUR_APP_KEY' with your actual Edamam API credentials
                 const appId = '6d07bcac';
                 const appKey = '2af7e7e87610a515dba26a484c02cc07';
@@ -139,6 +231,7 @@
                             title: hit.recipe.label,
                             url: hit.recipe.url,
                             image: hit.recipe.image,
+                            ingredients: hit.recipe.ingredientLines, // Added ingredients
                         }));
 
                         // Display the recipes
@@ -176,17 +269,54 @@
                 link.href = recipe.url;
                 link.textContent = 'View Recipe';
 
+                // Create and add the tooltip for ingredients
+                const tooltip = document.createElement('div');
+                tooltip.className = 'recipe-tooltip';
+
+                // Create an unordered list for ingredients
+                const ingredientsList = document.createElement('ul');
+                ingredientsList.className = 'recipe-ingredients';
+                recipe.ingredients.forEach((ingredient) => {
+                    const ingredientItem = document.createElement('li');
+                    ingredientItem.textContent = ingredient;
+                    ingredientsList.appendChild(ingredientItem);
+                });
+                
+                tooltip.appendChild(ingredientsList);
+
+                // Add tooltip to the recipe box
+                recipeBox.appendChild(tooltip);
+
                 recipeBox.appendChild(image);
                 recipeBox.appendChild(name);
                 recipeBox.appendChild(link);
                 listItem.appendChild(recipeBox);
                 recipeList.appendChild(listItem);
+
+                // Add hover event listeners to recipe boxes
+                recipeBox.addEventListener('mouseenter', () => {
+                    // Show ingredients when hovering over the recipe box
+                    tooltip.style.display = 'block';
+                });
+
+                recipeBox.addEventListener('mouseleave', () => {
+                    // Hide ingredients when moving the cursor out of the recipe box
+                    tooltip.style.display = 'none';
+                });
             });
         }
 
         // Function to redirect to the homepage
         function redirectToHomepage() {
             window.location.href = 'home.html'; // Replace with the actual homepage URL
+        }
+
+        // Function to perform search
+        function performSearch() {
+            const searchInput = document.getElementById('search-input');
+            const query = searchInput.value;
+            // Redirect to the search results page with the query as a URL parameter
+            window.location.href = `search-results.html?q=${query}`;
         }
 
         // Call the function to display search results when the page loads

@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!-- Meta tags, title, and CSS styles -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RecipeWorld</title>
-    <style>
+    <head>
+        <!-- Meta tags, title, and CSS styles -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>RecipeWorld</title>
+        
+        <!-- Add the Google Fonts link for Lemon font here -->
+        <link href="https://fonts.googleapis.com/css2?family=Lemon:wght@400;700&display=swap" rel="stylesheet">
+    
+        <style>
         /* CSS Styles Here */
         body {
             margin: 0;
@@ -24,6 +28,7 @@
             align-items: center;
             text-align: center;
             color: #ffffff;
+            font-family: 'Lemon', sans-serif;
         }
 
         .group {
@@ -37,58 +42,71 @@
             font-family: "Lemon", sans-serif;
             font-size: 100px;
             font-style: normal;
-            font-weight: bold; /* Apply bold style */
+            font-weight:400; /* Apply bold style */
             line-height: normal;
             margin-top: 30px;
             white-space: nowrap;
             max-width: 90%;
         }
 
+        /* Add styles for the search bar */
         .search-bar {
             display: flex;
-            align-items: center; /* Center items horizontally and vertically */
-            margin-top: 50px;
-            max-width: 50%; /* Decrease the width of the search bar */
+            align-items: center;
+            /* margin-top: 20px; Adjust the top margin */
+            width: calc(40%); /* Increase the width */
+            height: 120px; /* Increase the height */
         }
 
         .search-input {
+            font-size: 36px; /* Increase the font size for the search input */
             font-family: "Comic Sans MS", sans-serif;
-            font-size: 48px;
+            font-style: normal;
             font-weight: 400;
+            padding: 10px; /* Adjust padding for the search input */
             border: none;
-            border-radius: 50px;
-            padding: 10px 20px;
+            border-radius: 10px;
+            margin-right: 10px; /* Add margin to separate input and button */
             flex-grow: 1;
         }
 
-        .search-logo-wrapper {
-            display: flex;
-            align-items: center;
-            margin-left: 20px; /* Add spacing to the left of the search icon */
-            cursor: pointer; /* Add cursor pointer for the search icon */
+        .search-button {
+            font-size: 36px; /* Increase the font size for the button */
+            font-family: "Comic Sans MS", sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            background-color: #F40058;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
         }
 
-        .search-logo {
-            height: 60px; /* Adjust the size of the search logo */
-            width: 60px; /* Adjust the size of the search logo */
+        .search-button:hover {
+            background-color: #AE03FF; /* Change button color on hover */
         }
 
         .suggest-recipes-link {
             text-decoration: none;
             color: #FFF;
             font-weight: bold;
-            font-size: 48px;
+            font-size: 36px;
             font-family: "Comic Sans MS", sans-serif;
             font-style: normal;
             font-weight: 400;
             line-height: normal;
             display: inline-block;
             background-color: #F40058;
-            border-radius: 50px;
-            border: 5px solid #AE03FF;
+            border-radius: 10px;
+            /* border: 5px solid #AE03FF; */
             padding: 10px 70px;
             text-align: center;
             margin-top: 20px; /* Add spacing at the top of the link */
+        }
+
+        .suggest-recipes-link:hover {
+            background-color: #AE03FF;
         }
     </style>
 </head>
@@ -97,12 +115,10 @@
     <div class="desktop">
         <img class="group" alt="Group1" src="logo.png" />
         <div class="text-wrapper">RecipeWorld</div>
-        <div class="search-bar">
-            <input class="search-input" type="text" placeholder="Search for recipes" onkeypress="searchOnEnter(event)" />
-            <div class="search-logo-wrapper" onclick="performSearch()">
-                <img class="search-logo" alt="Search" src="search.png" />
-            </div>
-        </div>
+        <form class="search-bar" onsubmit="performSearch(); return false;"> <!-- Use a form for the search bar -->
+            <input class="search-input" type="text" placeholder="Search for recipes" id="searchInput" />
+            <button class="search-button" onclick="performSearch()">Search</button> <!-- Add a search button -->
+        </form>
         <div class="overlap-group-wrapper">
             <a href="random-recipes.html" class="suggest-recipes-link">Suggest Recipes</a>
         </div>
@@ -110,19 +126,13 @@
 
     <!-- Add this script element inside the <head> of your HTML document -->
     <script>
-        function searchOnEnter(event) {
-            if (event.key === 'Enter') {
-                performSearch();
-            }
-        }
-
         function performSearch() {
             // Replace 'YOUR_APP_ID' and 'YOUR_APP_KEY' with your actual Edamam API credentials
             const appId = '6d07bcac';
             const appKey = '2af7e7e87610a515dba26a484c02cc07';
     
             // Get the search input value
-            const searchInput = document.querySelector('.search-input');
+            const searchInput = document.getElementById('searchInput');
             const query = searchInput.value;
     
             // Build the API URL
