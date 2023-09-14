@@ -32,58 +32,64 @@
         }
 
         .text-wrapper {
-            font-family: "Lemon-Regular", Helvetica;
+            color: #FFF;
+            text-align: center;
+            font-family: "Lemon", sans-serif;
             font-size: 100px;
-            font-weight: 400;
+            font-style: normal;
+            font-weight: bold; /* Apply bold style */
+            line-height: normal;
             margin-top: 30px;
             white-space: nowrap;
             max-width: 90%;
-            text-align: center; /* Center the text horizontally */
         }
 
         .search-bar {
             display: flex;
-            align-items: center;
-            margin-top: 30px;
-            max-width: 90%;
-        }
-
-        .search {
-            height: 80px;
-            width: 80px;
-            margin-right: 10px;
-            cursor: pointer; /* Add cursor pointer for the search icon */
+            align-items: center; /* Center items horizontally and vertically */
+            margin-top: 50px;
+            max-width: 50%; /* Decrease the width of the search bar */
         }
 
         .search-input {
-            font-family: "Comic Sans MS-Regular", Helvetica;
+            font-family: "Comic Sans MS", sans-serif;
             font-size: 48px;
             font-weight: 400;
-            flex-grow: 1;
             border: none;
             border-radius: 50px;
             padding: 10px 20px;
+            flex-grow: 1;
         }
 
-        .overlap-group-wrapper {
-            margin-top: 30px;
-            max-width: 90%;
+        .search-logo-wrapper {
+            display: flex;
+            align-items: center;
+            margin-left: 20px; /* Add spacing to the left of the search icon */
+            cursor: pointer; /* Add cursor pointer for the search icon */
+        }
+
+        .search-logo {
+            height: 60px; /* Adjust the size of the search logo */
+            width: 60px; /* Adjust the size of the search logo */
         }
 
         .suggest-recipes-link {
             text-decoration: none;
-            color: #000000;
+            color: #FFF;
             font-weight: bold;
-            font-size: larger;
+            font-size: 48px;
+            font-family: "Comic Sans MS", sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
             display: inline-block;
-            background-color: #f40057;
+            background-color: #F40058;
             border-radius: 50px;
-            padding: 20px 70px; /* Adjust the padding to make it bigger */
+            border: 5px solid #AE03FF;
+            padding: 10px 70px;
             text-align: center;
+            margin-top: 20px; /* Add spacing at the top of the link */
         }
-        
-        
-        
     </style>
 </head>
 <body>
@@ -92,18 +98,24 @@
         <img class="group" alt="Group1" src="logo.png" />
         <div class="text-wrapper">RecipeWorld</div>
         <div class="search-bar">
-            <img class="search" alt="Search" src="search.png" onclick="performSearch()" />
-            <input class="search-input" type="text" placeholder="Search for recipes" />
+            <input class="search-input" type="text" placeholder="Search for recipes" onkeypress="searchOnEnter(event)" />
+            <div class="search-logo-wrapper" onclick="performSearch()">
+                <img class="search-logo" alt="Search" src="search.png" />
+            </div>
         </div>
         <div class="overlap-group-wrapper">
-            <a href="random-recipes.html" class="suggest-recipes-link">
-                <div class="text-wrapper-2">Suggest Recipes</div>
-            </a>
+            <a href="random-recipes.html" class="suggest-recipes-link">Suggest Recipes</a>
         </div>
     </div>
 
     <!-- Add this script element inside the <head> of your HTML document -->
     <script>
+        function searchOnEnter(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        }
+
         function performSearch() {
             // Replace 'YOUR_APP_ID' and 'YOUR_APP_KEY' with your actual Edamam API credentials
             const appId = '6d07bcac';
