@@ -187,7 +187,7 @@
             .recipe-image{
                 border-radius: 10px;
             }
-            
+
         .recipe-name-popup {
             font-weight: bold;
             margin-top: 20px; /* Add margin between image and title bar */
@@ -365,6 +365,11 @@
             // Unblur the background
             const desktop = document.querySelector('.desktop');
             desktop.style.filter = 'none';
+        }
+
+                // Function to redirect to the homepage
+                function redirectToHomepage() {
+            window.location.href = 'home.html'; // Replace with the actual homepage URL
         }
 
         // Call the function to display random recipes when the page loads
