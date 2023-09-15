@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Lemon:wght@400;700&display=swap" rel="stylesheet">
     <title>Random Recipes - RecipeWorld</title>
 
+    <!-- Add the Lodash library via CDN for shuffling -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+
     <style>
         /* CSS Styles Here */
         body {
@@ -171,11 +174,20 @@
         /* Style for the pop-up content */
         .popup-content {
             display: flex;
+            max-width: 100%;
+            height: auto;
+            margin-top: 30px; /* Add margin to separate the image from the title */
+            /* cursor: pointer;  Add cursor pointer */
+            
             flex-direction: column;
             align-items: center;
             text-align: center;
-        }
+            }
 
+            .recipe-image{
+                border-radius: 10px;
+            }
+            
         .recipe-name-popup {
             font-weight: bold;
             margin-top: 20px; /* Add margin between image and title bar */
@@ -225,6 +237,16 @@
 
     <!-- JavaScript to fetch and display random recipes -->
     <script>
+        // Function to shuffle an array randomly
+        function shuffleArray(array) {
+            let shuffledArray = [...array];
+            for (let i = shuffledArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+            }
+            return shuffledArray;
+        }
+
         // Function to fetch and display random recipes
         function displayRandomRecipes() {
             // Replace 'YOUR_APP_ID' and 'YOUR_APP_KEY' with your actual Edamam API credentials
@@ -259,8 +281,11 @@
                         ingredients: hit.recipe.ingredientLines, // Adding ingredients to the recipe data
                     }));
 
+                    // Shuffle the recipes randomly
+                    const shuffledRecipes = shuffleArray(recipes);
+
                     // Display the random recipes
-                    recipes.forEach((recipe) => {
+                    shuffledRecipes.forEach((recipe) => {
                         const recipeBox = document.createElement('div');
                         recipeBox.className = 'recipe-box';
 
