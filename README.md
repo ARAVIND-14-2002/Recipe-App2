@@ -14,7 +14,7 @@ Here are some screenshots of our project in action:
    ![HomePage](./screenshot4.png)
 
 2. **Search Result**
-   ![Search Result](./screenshot6)
+   ![Search Result](./screenshot6.png)
 
 3.**Ingredients Pop Up**
    ![Recipe ingredients](./screenshot5.png)
