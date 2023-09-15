@@ -64,14 +64,18 @@
         }
 
         .recipe-box {
+            position:static; /* Position for tooltip */
             border-radius: 10px;
-            background: radial-gradient(221.92% 70.71% at 50% 50%, rgba(0, 0, 0, 0.50) 0%, #FCFCFC 100%);
+            background: radial-gradient(221.92% 70.71% at 50% 50%, rgba(0, 0, 0, 0.50) 0%, #252525 100%);
             padding: 20px;
             margin-bottom: 20px; /* Add margin to separate recipe boxes vertically */
-            width: calc(25% - 20px); /* Calculate width for four boxes per row */
+            flex: 0 0 calc(25% - 20px); /* Calculate width for four boxes per row */
             text-align: center;
+            font-family: "Comic Sans MS", sans-serif;
+            color: #fff;
             max-width: 300px; /* Reduce the size of the boxes */
             transition: transform 0.2s ease-in-out; /* Add transition effect for hover */
+            cursor: pointer; /* Add cursor pointer */
         }
 
         .recipe-box:hover {
@@ -174,19 +178,17 @@
         /* Style for the pop-up content */
         .popup-content {
             display: flex;
-            max-width: 100%;
-            height: auto;
-            margin-top: 30px; /* Add margin to separate the image from the title */
-            /* cursor: pointer;  Add cursor pointer */
-            
             flex-direction: column;
             align-items: center;
             text-align: center;
-            }
+            padding: 20px;
+        }
 
-            .recipe-image{
-                border-radius: 10px;
-            }
+        .popup-image {
+            border-radius: 10px; /* Rounded corners for the image */
+            max-width: 100%;
+            height: auto;
+        }
 
         .recipe-name-popup {
             font-weight: bold;
@@ -366,11 +368,10 @@
             const desktop = document.querySelector('.desktop');
             desktop.style.filter = 'none';
         }
-
                 // Function to redirect to the homepage
                 function redirectToHomepage() {
-            window.location.href = 'home.html'; // Replace with the actual homepage URL
-        }
+                    window.location.href = 'home.html'; // Replace with the actual homepage URL
+                }
 
         // Call the function to display random recipes when the page loads
         window.onload = function () {

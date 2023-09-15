@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <!-- Meta tags, title, and CSS styles -->
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>RecipeWorld</title>
-        <link rel="icon" type="image/x-icon" href="logo.ico">
+<head>
+    <!-- Meta tags, title, and CSS styles -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecipeWorld</title>
+    <link rel="icon" type="image/x-icon" href="logo.ico">
+    <!-- Add the Google Fonts link for Lemon font here -->
+    <link href="https://fonts.googleapis.com/css2?family=Lemon:wght@400;700&display=swap" rel="stylesheet">
 
-        <!-- Add the Google Fonts link for Lemon font here -->
-        <link href="https://fonts.googleapis.com/css2?family=Lemon:wght@400;700&display=swap" rel="stylesheet">
-    
-        <style>
-        /* CSS Styles Here */
+    <style>
+        /* Common styles for both desktop and mobile */
         body {
             margin: 0;
             padding: 0;
@@ -33,46 +32,45 @@
         }
 
         .group {
-            height: 250px;
-            width: 250px;
+            height: auto; /* Adjust height to auto */
+            max-width: 80%; /* Set a maximum width */
         }
 
         .text-wrapper {
             color: #FFF;
             text-align: center;
             font-family: "Lemon", sans-serif;
-            font-size: 100px;
+            font-size: 50px; /* Reduce font size for mobile */
             font-style: normal;
-            font-weight:400; /* Apply bold style */
+            font-weight: 400; /* Apply bold style */
             line-height: normal;
-            margin-top: 30px;
+            margin-top: 25px; /* Adjust margin for mobile */
+            margin-bottom: 25px; /* Adjust margin for mobile */
             white-space: nowrap;
-            max-width: 90%;
+            max-width: 100%;
         }
 
-        /* Add styles for the search bar */
+        /* Common styles for search bar and button */
         .search-bar {
             display: flex;
+            justify-content: center;
             align-items: center;
-            /* margin-top: 20px; Adjust the top margin */
-            width: calc(40%); /* Increase the width */
-            height: 120px; /* Increase the height */
+            width: 100%;
         }
 
         .search-input {
-            font-size: 36px; /* Increase the font size for the search input */
+            font-size: 24px; /* Reduce font size for mobile */
             font-family: "Comic Sans MS", sans-serif;
             font-style: normal;
             font-weight: 400;
-            padding: 10px; /* Adjust padding for the search input */
+            padding: 10px;
             border: none;
             border-radius: 10px;
             margin-right: 10px; /* Add margin to separate input and button */
-            flex-grow: 1;
         }
 
         .search-button {
-            font-size: 36px; /* Increase the font size for the button */
+            font-size: 24px; /* Reduce font size for mobile */
             font-family: "Comic Sans MS", sans-serif;
             font-style: normal;
             font-weight: 400;
@@ -85,14 +83,14 @@
         }
 
         .search-button:hover {
-            background-color: #AE03FF; /* Change button color on hover */
+            background-color: #AE03FF;
         }
 
         .suggest-recipes-link {
             text-decoration: none;
             color: #FFF;
             font-weight: bold;
-            font-size: 36px;
+            font-size: 24px; /* Reduce font size for mobile */
             font-family: "Comic Sans MS", sans-serif;
             font-style: normal;
             font-weight: 400;
@@ -100,14 +98,27 @@
             display: inline-block;
             background-color: #F40058;
             border-radius: 10px;
-            /* border: 5px solid #AE03FF; */
-            padding: 10px 70px;
+            padding: 10px 20px;
             text-align: center;
-            margin-top: 20px; /* Add spacing at the top of the link */
+            margin-top: 20px;
         }
 
         .suggest-recipes-link:hover {
             background-color: #AE03FF;
+        }
+
+        /* Media query for screens with a maximum width of 768px (typical mobile devices) */
+        @media (max-width: 768px) {
+            .search-bar {
+                margin-left: 10px;
+                flex-direction: column; /* Change to vertical layout for mobile */
+                align-items: center; /* Align items to the start of the container */
+            }
+
+            .search-button {
+        
+                margin-top: 10px; /* Add margin to the search button for spacing */
+            }
         }
     </style>
 </head>
@@ -116,9 +127,9 @@
     <div class="desktop">
         <img class="group" alt="Group1" src="logo.png" />
         <div class="text-wrapper">RecipeWorld</div>
-        <form class="search-bar" onsubmit="performSearch(); return false;"> <!-- Use a form for the search bar -->
+        <form class="search-bar" onsubmit="performSearch(); return false;">
             <input class="search-input" type="text" placeholder="Search for recipes" id="searchInput" />
-            <button class="search-button" onclick="performSearch()">Search</button> <!-- Add a search button -->
+            <button class="search-button" onclick="performSearch()">Search</button>
         </form>
         <div class="overlap-group-wrapper">
             <a href="random-recipes.html" class="suggest-recipes-link">Suggest Recipes</a>
@@ -131,14 +142,14 @@
             // Replace 'YOUR_APP_ID' and 'YOUR_APP_KEY' with your actual Edamam API credentials
             const appId = '6d07bcac';
             const appKey = '2af7e7e87610a515dba26a484c02cc07';
-    
+
             // Get the search input value
             const searchInput = document.getElementById('searchInput');
             const query = searchInput.value;
-    
+
             // Build the API URL
             const apiUrl = `https://api.edamam.com/search?q=${query}&app_id=${appId}&app_key=${appKey}`;
-    
+
             // Redirect to the search results page with the query as a URL parameter
             window.location.href = `search-results.html?q=${query}`;
         }
