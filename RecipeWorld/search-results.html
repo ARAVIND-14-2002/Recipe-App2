@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RecipeWorld - Search Results</title>
+    <link rel="icon" type="image/x-icon" href="logo.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Lemon:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* CSS Styles Here */
         body {
@@ -43,7 +45,8 @@
 
         .text-wrapper {
             font-size: 36px;
-            font-weight: bold;
+            font-family: "Lemon", sans-serif;
+            font-weight: 200;
             margin-top: 20px;
             color: #fff; /* Change the title color to white */
         }
@@ -85,15 +88,16 @@
 
         /* Add a white stroke line */
         .stroke-line {
-            width: 90%;
-            height: 5px;
-            background-color: #fff;
+            width: 95%;
+            height: 3px;
+            background-color: #a6a6a6;
             margin-top: 20px; /* Adjust the top margin */
         }
 
         .search-results {
             max-width: 90%;
             margin-top: 20px;
+            font-family: "Comic Sans MS", sans-serif;
             display: flex;
             flex-wrap: wrap; /* Allow recipes to wrap to the next row */
             justify-content: space-between; /* Add space between recipe boxes */
@@ -107,8 +111,10 @@
             margin-bottom: 20px; /* Add margin to separate recipe boxes vertically */
             flex: 0 0 calc(25% - 20px); /* Calculate width for four boxes per row */
             text-align: center;
+            font-family: "Comic Sans MS", sans-serif;
             max-width: 300px; /* Reduce the size of the boxes */
             transition: transform 0.2s ease-in-out; /* Add transition effect for hover */
+            cursor: pointer; /* Add cursor pointer */
         }
 
         .recipe-box:hover {
@@ -116,6 +122,7 @@
         }
 
         .recipe-list {
+            font-family: "Comic Sans MS", sans-serif;
             list-style-type: none;
             padding: 0;
         }
@@ -124,6 +131,7 @@
         .recipe-link {
             text-decoration: none;
             color: #fff;
+            font-family: "Comic Sans MS", sans-serif;
             font-weight: bold;
             display: inline-block;
             background-color: #F40058; /* Background color for the link */
@@ -142,36 +150,84 @@
             max-width: 100%;
             height: auto;
             margin-top: 10px; /* Add margin to separate the image from the title */
+            cursor: pointer; /* Add cursor pointer */
         }
 
         .recipe-name {
             font-weight: bold;
         }
 
-        /* Add a style for the tooltip */
-        .recipe-tooltip {
+        /* Updated CSS for the popup container with Mac terminal design */
+        .mac-terminal-popup {
             display: none;
-            position:fixed;
-            background-color: #fff;
-            color: #333;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
+            position: fixed;
+            background-color: #2f2f2f;
+            color: white;
+            border: 2px solid rgb(180, 180, 180);
+            border-radius: 10px;
             z-index: 1;
-            width: 100%; /* Set a fixed width for the tooltip */
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add shadow to the tooltip */
-            top: 0; /* Align tooltip to the top of the recipe box */
+            width: 80%; /* Set a fixed width for the popup */
+            max-height: 70%; /* Set a maximum height for the popup */
+            overflow-y: auto; /* Add scroll for overflow content */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add shadow to the popup */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center the popup */
         }
 
-        .recipe-ingredients {
-            /* Style for the ingredients list */
-            list-style-type: decimal;
-            padding-left: 20px;
+        .mac-terminal-title-bar {
+            display: flex;
+           
+            justify-content: space-between;
+            align-items: center;
+            background-color: #161618;
+            padding: 10px;
+            border-bottom: 1px solid #FCFCFC;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
         }
 
-        .recipe-ingredients li {
-            margin-bottom: 5px;
+        .ryg-box {
+            width: 60px;
+            display: flex;
+            justify-content: space-between;
         }
+
+        .mac-terminal-close-button.red-circle {
+            width: 12px;
+            height: 12px;
+            background-color: #FF5F56;
+            border-radius: 50%;
+            margin-right: 8px; /* Adjust the margin for spacing */
+            cursor: pointer;
+        }
+
+        /* Add styles for the yellow circle */
+        .mac-terminal-circle.yellow {
+            width: 12px;
+            height: 12px;
+            background-color: #FED100;
+            border-radius: 50%;
+            margin-right: 8px; /* Adjust the margin for spacing */
+        }
+
+        /* Add styles for the green circle */
+        .mac-terminal-circle.green {
+            width: 12px;
+            height: 12px;
+            background-color: #00C940;
+            border-radius: 50%;
+            margin-right: 0;
+            cursor: pointer;
+            transition: all 1ms ease-in-out; /* Add a smooth transition for all properties */
+        }
+
+        .mac-terminal-content {
+            padding: 10px;
+        }
+        /* End of Mac terminal popup styles */
+
+        /* Add other styles as needed */
     </style>
 </head>
 <body>
@@ -197,7 +253,29 @@
         </ul>
     </div>
 
-    <!-- JavaScript to fetch and display search results -->
+    <!-- Popup Container -->
+    <div id="popup-container" class="mac-terminal-popup">
+        <div class="mac-terminal-title-bar">
+            <div class="ryg-box">
+                <div class="mac-terminal-close-button red-circle" onclick="closePopup()"></div>
+                <div class="mac-terminal-circle yellow"></div>
+                <div class="mac-terminal-circle green" onclick="closePopup()"></div>
+            </div>
+        </div>
+        <div class="mac-terminal-content">
+            <div class="recipe-tooltip-content">
+                <!-- Add an image element for the recipe image -->
+                <img class="recipe-image" id="recipe-image" src="" alt="Recipe Image">
+                <h2 id="recipe-name">Ingredients:</h2>
+                <ul class="recipe-ingredients" id="popup-ingredients-list">
+                    <!-- Ingredients will be dynamically added here using JavaScript -->
+                </ul>
+                <a class="recipe-link" id="view-recipe-button" href="#" target="_blank">View Recipe</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript to fetch and display search results and handle popup -->
     <script>
         // Function to get the search query from the URL
         function getSearchQuery() {
@@ -259,6 +337,7 @@
                 image.className = 'recipe-image';
                 image.src = recipe.image;
                 image.alt = recipe.title;
+                image.onclick = () => openPopup(recipe);
 
                 const name = document.createElement('div');
                 name.className = 'recipe-name';
@@ -269,41 +348,62 @@
                 link.href = recipe.url;
                 link.textContent = 'View Recipe';
 
-                // Create and add the tooltip for ingredients
-                const tooltip = document.createElement('div');
-                tooltip.className = 'recipe-tooltip';
-
-                // Create an unordered list for ingredients
-                const ingredientsList = document.createElement('ul');
-                ingredientsList.className = 'recipe-ingredients';
-                recipe.ingredients.forEach((ingredient) => {
-                    const ingredientItem = document.createElement('li');
-                    ingredientItem.textContent = ingredient;
-                    ingredientsList.appendChild(ingredientItem);
-                });
-                
-                tooltip.appendChild(ingredientsList);
-
-                // Add tooltip to the recipe box
-                recipeBox.appendChild(tooltip);
-
                 recipeBox.appendChild(image);
                 recipeBox.appendChild(name);
                 recipeBox.appendChild(link);
                 listItem.appendChild(recipeBox);
                 recipeList.appendChild(listItem);
-
-                // Add hover event listeners to recipe boxes
-                recipeBox.addEventListener('mouseenter', () => {
-                    // Show ingredients when hovering over the recipe box
-                    tooltip.style.display = 'block';
-                });
-
-                recipeBox.addEventListener('mouseleave', () => {
-                    // Hide ingredients when moving the cursor out of the recipe box
-                    tooltip.style.display = 'none';
-                });
             });
+        }
+
+        // Function to open the popup and display ingredients and image
+        function openPopup(recipe) {
+            const popupContainer = document.getElementById('popup-container');
+            const popupIngredientsList = document.getElementById('popup-ingredients-list');
+            const recipeName = document.getElementById('recipe-name');
+            const recipeImage = document.getElementById('recipe-image'); // Get the recipe image element
+            const viewRecipeButton = document.getElementById('view-recipe-button');
+
+            // Clear previous ingredients
+            while (popupIngredientsList.firstChild) {
+                popupIngredientsList.removeChild(popupIngredientsList.firstChild);
+            }
+
+            // Add ingredients to the popup
+            recipe.ingredients.forEach((ingredient) => {
+                const ingredientItem = document.createElement('li');
+                ingredientItem.textContent = ingredient;
+                popupIngredientsList.appendChild(ingredientItem);
+            });
+
+            // Set the recipe name as the heading
+            recipeName.textContent = recipe.title;
+
+            // Set the recipe image source and alt text
+            recipeImage.src = recipe.image;
+            recipeImage.alt = recipe.title;
+
+            // Set the "View Recipe" button's href attribute to the recipe URL
+            viewRecipeButton.href = recipe.url;
+
+            // Display the popup
+            popupContainer.style.display = 'block';
+
+            // Blur the background
+            const desktop = document.querySelector('.desktop');
+            desktop.style.filter = 'blur(5px)';
+        }
+
+        // Function to close the popup
+        function closePopup() {
+            const popupContainer = document.getElementById('popup-container');
+
+            // Hide the popup
+            popupContainer.style.display = 'none';
+
+            // Unblur the background
+            const desktop = document.querySelector('.desktop');
+            desktop.style.filter = 'none';
         }
 
         // Function to redirect to the homepage

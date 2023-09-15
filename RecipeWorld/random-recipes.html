@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Recipes - RecipeWorld</title>
+
     <style>
         /* CSS Styles Here */
         body {
@@ -75,10 +76,6 @@
             padding: 0;
         }
 
-        .recipe-list-item {
-            margin-bottom: 10px;
-        }
-
         /* Add styles for the "View Recipe" link */
         .recipe-link {
             text-decoration: none;
@@ -102,10 +99,48 @@
             height: 200px; /* Fixed height for recipe images */
             object-fit: cover; /* Maintain aspect ratio and cover the container */
             margin-top: 10px;
+            cursor: pointer; /* Add cursor pointer on image */
         }
 
         .recipe-name {
             font-weight: bold;
+        }
+
+        /* Style for the pop-up container */
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Center the pop-up */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 80%;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .popup-box {
+            position: relative;
+        }
+
+        /* Style for the close button */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        /* Style for the recipe details inside the pop-up */
+        .recipe-details {
+            padding: 20px;
+        }
+
+        .recipe-ingredients {
+            list-style-type: none;
+            padding: 0;
         }
     </style>
 </head>
@@ -120,6 +155,21 @@
         <!-- Section to Display Random Recipes -->
         <div class="random-recipes" id="recipe-list">
             <!-- Random recipes will be dynamically added here using JavaScript -->
+        </div>
+    </div>
+
+    <!-- Popup Container -->
+    <div id="popup-container" class="popup-container">
+        <div class="popup-box">
+            <span class="close-button" onclick="closePopup()">&times;</span>
+            <div class="recipe-details">
+                <h2 class="popup-title"></h2>
+                <img class="popup-image" alt="Recipe Image" src="">
+                <ul class="recipe-ingredients" id="popup-ingredients-list">
+                    <!-- Ingredients will be dynamically added here using JavaScript -->
+                </ul>
+                <a class="recipe-link" id="view-recipe-button" href="#" target="_blank">View Recipe</a>
+            </div>
         </div>
     </div>
 
@@ -156,6 +206,7 @@
                         title: hit.recipe.label,
                         url: hit.recipe.url,
                         image: hit.recipe.image,
+                        ingredients: hit.recipe.ingredientLines, // Adding ingredients to the recipe data
                     }));
 
                     // Display the random recipes
@@ -174,8 +225,13 @@
 
                         const link = document.createElement('a');
                         link.className = 'recipe-link';
-                        link.href = recipe.url;
+                        link.href = 'javascript:void(0);'; // JavaScript void function for handling click
                         link.textContent = 'View Recipe';
+
+                        // Attach a click event to the recipe image to open the pop-up
+                        image.addEventListener('click', function () {
+                            openPopup(recipe);
+                        });
 
                         recipeBox.appendChild(image);
                         recipeBox.appendChild(name);
@@ -186,6 +242,46 @@
                 .catch((error) => {
                     console.error('There was a problem with the fetch operation:', error);
                 });
+        }
+
+        // Function to open the pop-up with recipe details
+        function openPopup(recipe) {
+            const popupContainer = document.getElementById('popup-container');
+            const popupImage = document.querySelector('.popup-image');
+            const popupTitle = document.querySelector('.popup-title');
+            const popupIngredientsList = document.getElementById('popup-ingredients-list');
+            const viewRecipeButton = document.getElementById('view-recipe-button');
+
+            // Set the recipe details in the pop-up
+            popupImage.src = recipe.image;
+            popupImage.alt = recipe.title;
+            popupTitle.textContent = recipe.title;
+
+            // Clear previous ingredients
+            while (popupIngredientsList.firstChild) {
+                popupIngredientsList.removeChild(popupIngredientsList.firstChild);
+            }
+
+            // Add ingredients to the pop-up
+            recipe.ingredients.forEach((ingredient) => {
+                const ingredientItem = document.createElement('li');
+                ingredientItem.textContent = ingredient;
+                popupIngredientsList.appendChild(ingredientItem);
+            });
+
+            // Set the "View Recipe" button's href attribute to the recipe URL
+            viewRecipeButton.href = recipe.url;
+
+            // Display the pop-up
+            popupContainer.style.display = 'block';
+        }
+
+        // Function to close the pop-up
+        function closePopup() {
+            const popupContainer = document.getElementById('popup-container');
+
+            // Hide the pop-up
+            popupContainer.style.display = 'none';
         }
 
         // Function to redirect to the homepage
