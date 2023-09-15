@@ -4,6 +4,8 @@
     <!-- Meta tags, title, and CSS styles -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Lemon:wght@400;700&display=swap" rel="stylesheet">
     <title>Random Recipes - RecipeWorld</title>
 
     <style>
@@ -43,8 +45,10 @@
         }
 
         h1 {
-            font-size: 24px;
-            margin-top: 10px;
+            font-size: 36px;
+            font-family: "Lemon", sans-serif;
+            font-weight: 200;
+            margin-top: 20px;
             color: #fff; /* Change the title color to white */
         }
 
@@ -95,10 +99,11 @@
         }
 
         .recipe-image {
+            border-radius: 10px; /* Rounded corners */
             max-width: 100%;
             height: 200px; /* Fixed height for recipe images */
             object-fit: cover; /* Maintain aspect ratio and cover the container */
-            margin-top: 10px;
+            margin-top: 30px; /* Margin-top of 30px */
             cursor: pointer; /* Add cursor pointer on image */
         }
 
@@ -110,42 +115,82 @@
         .popup-container {
             display: none;
             position: fixed;
-            top: 50%; /* Center vertically */
-            left: 50%; /* Center horizontally */
-            transform: translate(-50%, -50%); /* Center the pop-up */
-            background-color: #fff;
-            padding: 20px;
+            background-color: #2f2f2f;
+            color: white;
+            border: 2px solid rgb(180, 180, 180);
             border-radius: 10px;
-            max-width: 80%;
-            text-align: center;
-            z-index: 1000;
+            z-index: 1;
+            width: 70%; /* Set a fixed width for the popup */
+            max-height: 90%; /* Set a maximum height for the popup */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add shadow to the popup */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center the popup */
+            overflow: scroll; /* Hide any overflowing content */
+        }
+
+        /* Hide scrollbar */
+        .popup-container::-webkit-scrollbar {
+            width: 0; /* Set the width to 0 to hide the scrollbar */
         }
 
         .popup-box {
             position: relative;
         }
 
-        /* Style for the close button */
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
+        /* Style for the Mac title bar */
+        .mac-title-bar {
+            background-color: #161618;
+            height: 20px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 5px;
         }
 
-        /* Style for the recipe details inside the pop-up */
-        .recipe-details {
-            padding: 20px;
+        /* Style for the traffic light buttons */
+        .traffic-light {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .traffic-light.red {
+            background-color: #FF5F56;
+        }
+
+        .traffic-light.yellow {
+            background-color: #FFBD2E;
+        }
+
+        .traffic-light.green {
+            background-color: #27C93F;
+        }
+
+        /* Style for the pop-up content */
+        .popup-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .recipe-name-popup {
+            font-weight: bold;
+            margin-top: 20px; /* Add margin between image and title bar */
         }
 
         .recipe-ingredients {
-            list-style-type: none;
-            padding: 0;
+            list-style-type: disc; /* Use disc for bullet points */
+            text-align: left; /* Center alignment for the ingredients list */
+            padding-left: 10px; /* Add left padding for bullet points */
         }
     </style>
 </head>
 <body>
     <!-- HTML Content Here -->
+
     <div class="desktop">
         <div class="header">
             <img class="logo" alt="Logo" src="logo.png" onclick="redirectToHomepage()" />
@@ -161,10 +206,15 @@
     <!-- Popup Container -->
     <div id="popup-container" class="popup-container">
         <div class="popup-box">
-            <span class="close-button" onclick="closePopup()">&times;</span>
-            <div class="recipe-details">
-                <h2 class="popup-title"></h2>
+            <div class="mac-title-bar">
+                <span class="traffic-light red" onclick="closePopup()"></span>
+                <span class="traffic-light yellow"></span>
+                <span class="traffic-light green"></span>
+            </div>
+            
+            <div class="popup-content">
                 <img class="popup-image" alt="Recipe Image" src="">
+                <h2 class="recipe-name-popup"></h2>
                 <ul class="recipe-ingredients" id="popup-ingredients-list">
                     <!-- Ingredients will be dynamically added here using JavaScript -->
                 </ul>
@@ -248,21 +298,21 @@
         function openPopup(recipe) {
             const popupContainer = document.getElementById('popup-container');
             const popupImage = document.querySelector('.popup-image');
-            const popupTitle = document.querySelector('.popup-title');
+            const popupTitle = document.querySelector('.recipe-name-popup'); // Updated selector
             const popupIngredientsList = document.getElementById('popup-ingredients-list');
             const viewRecipeButton = document.getElementById('view-recipe-button');
 
             // Set the recipe details in the pop-up
             popupImage.src = recipe.image;
             popupImage.alt = recipe.title;
-            popupTitle.textContent = recipe.title;
+            popupTitle.textContent = recipe.title; // Updated content
 
             // Clear previous ingredients
             while (popupIngredientsList.firstChild) {
                 popupIngredientsList.removeChild(popupIngredientsList.firstChild);
             }
 
-            // Add ingredients to the pop-up
+            // Add ingredients to the pop-up as bullet points
             recipe.ingredients.forEach((ingredient) => {
                 const ingredientItem = document.createElement('li');
                 ingredientItem.textContent = ingredient;
@@ -274,19 +324,22 @@
 
             // Display the pop-up
             popupContainer.style.display = 'block';
+
+            // Blur the background
+            const desktop = document.querySelector('.desktop');
+            desktop.style.filter = 'blur(5px)';
         }
 
         // Function to close the pop-up
         function closePopup() {
             const popupContainer = document.getElementById('popup-container');
 
-            // Hide the pop-up
+            // Hide the popup
             popupContainer.style.display = 'none';
-        }
 
-        // Function to redirect to the homepage
-        function redirectToHomepage() {
-            window.location.href = 'home.html'; // Replace with the actual homepage URL
+            // Unblur the background
+            const desktop = document.querySelector('.desktop');
+            desktop.style.filter = 'none';
         }
 
         // Call the function to display random recipes when the page loads
