@@ -18,11 +18,14 @@ Here are some screenshots of our project in action:
 
 3.**Ingredients Pop Up**
    ![Recipe ingredients](./searchrecipe.jpg)
-   
+
 4. **Suggest Recipe**
+   ![Random Recipe](./randomrecipe.png)
+
+5. **Suggest Recipe**
    ![Random Recipe](./screenshot3.png)
 
-5. **1st Home-Page**
+6. **1st Home-Page**
    ![Previous Homepage](./screenshot1.png)
 
 
