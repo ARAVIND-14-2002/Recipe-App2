@@ -64,7 +64,7 @@
         }
 
         .recipe-box {
-            position:static; /* Position for tooltip */
+            position: relative; /* Position for tooltip */
             border-radius: 10px;
             background: radial-gradient(221.92% 70.71% at 50% 50%, rgba(0, 0, 0, 0.50) 0%, #252525 100%);
             padding: 20px;
@@ -106,12 +106,11 @@
         }
 
         .recipe-image {
-            border-radius: 10px; /* Rounded corners */
+            border-radius: 10px;
             max-width: 100%;
-            height: 200px; /* Fixed height for recipe images */
-            object-fit: cover; /* Maintain aspect ratio and cover the container */
-            margin-top: 30px; /* Margin-top of 30px */
-            cursor: pointer; /* Add cursor pointer on image */
+            height: auto;
+            margin-top: 10px; /* Add margin to separate the image from the title */
+            cursor: pointer; /* Add cursor pointer */
         }
 
         .recipe-name {
@@ -199,6 +198,19 @@
             list-style-type: disc; /* Use disc for bullet points */
             text-align: left; /* Center alignment for the ingredients list */
             padding-left: 10px; /* Add left padding for bullet points */
+        }
+
+        /* Media Query for responsive design */
+        @media screen and (max-width: 768px) {
+            .recipe-box {
+                flex: 0 0 calc(100% - 20px); /* Calculate width for one box per row */
+            }
+        }
+
+        @media screen and (min-width: 1200px) {
+            .recipe-box {
+                flex: 0 0 calc(33.3333% - 20px); /* Calculate width for three boxes per row */
+            }
         }
     </style>
 </head>
@@ -368,10 +380,11 @@
             const desktop = document.querySelector('.desktop');
             desktop.style.filter = 'none';
         }
-                // Function to redirect to the homepage
-                function redirectToHomepage() {
-                    window.location.href = 'home.html'; // Replace with the actual homepage URL
-                }
+
+        // Function to redirect to the homepage
+        function redirectToHomepage() {
+            window.location.href = 'home.html'; // Replace with the actual homepage URL
+        }
 
         // Call the function to display random recipes when the page loads
         window.onload = function () {

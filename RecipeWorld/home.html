@@ -10,18 +10,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Lemon:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Common styles for both desktop and mobile */
+        /* Reset the margin and padding of the body element */
         body {
             margin: 0;
             padding: 0;
+            overflow-x: hidden; /* Hide horizontal overflow */
         }
 
-        .desktop {
+        /* Common styles for both desktop and mobile */
+        body, .desktop {
             background-image: url('background.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            height: 100vh;
+            height: 115vh;
+            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -116,7 +119,6 @@
             }
 
             .search-button {
-        
                 margin-top: 10px; /* Add margin to the search button for spacing */
             }
         }

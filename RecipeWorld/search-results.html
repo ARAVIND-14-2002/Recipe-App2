@@ -67,6 +67,7 @@
             border: none;
             border-radius: 5px;
             margin-right: 10px; /* Add margin to separate input and button */
+            width: 100%; /* Make the input field take full width */
         }
 
         .search-button {
@@ -80,12 +81,24 @@
             border-radius: 5px;
             padding: 10px 20px;
             cursor: pointer;
+          /*  margin-top: 10px; /* Move the button below the input field */
         }
 
         .search-button:hover {
             background-color: #AE03FF;
         }
 
+        /* Media query for screens with a maximum width of 768px (typical mobile devices) */
+        @media (max-width: 768px) {
+            .search-input {
+                font-size: 16px; /* Reduce font size for smaller displays */
+            }
+
+            .search-button {
+                font-size: 16px; /* Reduce font size for smaller displays */
+              
+            }
+        }
         /* Add a white stroke line */
   /*      .stroke-line {
             width: 95%;
