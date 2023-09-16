@@ -35,23 +35,30 @@
         }
 
         .group {
-            height: auto; /* Adjust height to auto */
-            max-width: 80%; /* Set a maximum width */
+            position: fixed; /* Position it absolutely */
+            bottom: 60%; /* Place it at the top of the screen */
+            left: 50%; /* Center it horizontally */
+            transform: translateX(-50%); /* Center it horizontally */
+            height: auto;
+            max-width: 80%;
         }
-
+        
         .text-wrapper {
             color: #FFF;
             text-align: center;
             font-family: "Lemon", sans-serif;
-            font-size: 50px; /* Reduce font size for mobile */
+            font-size: 50px;
             font-style: normal;
-            font-weight: 400; /* Apply bold style */
+            font-weight: 400;
             line-height: normal;
-            margin-top: 25px; /* Adjust margin for mobile */
-            margin-bottom: 25px; /* Adjust margin for mobile */
+            margin-top: 25px;
+            margin-bottom: 5%;
             white-space: nowrap;
             max-width: 100%;
+            position: relative; /* Make it relative to allow space for .group */
+            
         }
+        
 
         /* Common styles for search bar and button */
         .search-bar {
