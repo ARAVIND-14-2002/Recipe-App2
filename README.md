@@ -17,7 +17,7 @@ Here are some screenshots of our project in action:
    ![Search Result](./randomrecipes.jpg)
 
 3.**Ingredients Pop Up**
-   ![Recipe ingredients](./searchrecipe.jpg)
+   ![Recipe details](./searchrecipe.jpg)
 
 4. **Suggest Recipe**
    ![Random Recipe](./randomrecipe.png)
