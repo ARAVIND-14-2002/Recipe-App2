@@ -11,13 +11,13 @@ This project aims to show how simple a recipe app can be Developed. It's packed 
 Here are some screenshots of our project in action:
 
 1. **HomePage**
-   ![HomePage](./screenshot4.png)
+   ![HomePage](./homebg.png)
 
 2. **Search Result**
-   ![Search Result](./screenshot6.png)
+   ![Search Result](./randomrecipes.png)
 
 3.**Ingredients Pop Up**
-   ![Recipe ingredients](./screenshot5.png)
+   ![Recipe ingredients](./searchrecipe.png)
    
 4. **Suggest Recipe**
    ![Random Recipe](./screenshot3.png)
