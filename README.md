@@ -22,7 +22,7 @@ Here are some screenshots of our project in action:
 4. **Suggest Recipe**
    ![Random Recipe](./randomrecipe.png)
 
-5. **Suggest Recipe**
+5. **1st design of Suggest Recipe**
    ![Random Recipe](./screenshot3.png)
 
 6. **1st Home-Page**
